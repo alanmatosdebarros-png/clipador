@@ -168,4 +168,5 @@ def capa(fonte: str, t: float, destino: Path, cfg: dict, plataforma,
         cx = Image.open(png).convert("RGBA")
         base.alpha_composite(cx, (int(larg * 0.04), int(alt * 0.215)))
         base.convert("RGB").save(destino)
+        png.unlink(missing_ok=True)
     return destino
