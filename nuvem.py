@@ -90,6 +90,14 @@ def main() -> int:
         return 1
 
     SAIDA.mkdir(parents=True, exist_ok=True)
+
+    # leva os perfis de HUD do repositorio pra pasta de dados
+    aqui = Path(__file__).resolve().parent
+    for origem in (aqui / "perfis").glob("*.json"):
+        alvo_perfil = config.PASTA_PERFIS / origem.name
+        if not alvo_perfil.exists():
+            alvo_perfil.write_text(origem.read_text("utf-8"), "utf-8")
+
     bruto = config.PASTA_BRUTO / "nuvem.mp4"
 
     t0 = time.time()
