@@ -1,0 +1,38 @@
+{
+  "name": "Clipador",
+  "image": "mcr.microsoft.com/devcontainers/python:1-3.12-bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {}
+  },
+  "postCreateCommand": "bash .devcontainer/preparar.sh",
+  "postAttachCommand": {
+    "clipador": "python clipador.py"
+  },
+  "forwardPorts": [
+    8777
+  ],
+  "portsAttributes": {
+    "8777": {
+      "label": "Clipador",
+      "onAutoForward": "openPreview"
+    }
+  },
+  "containerEnv": {
+    "CLIPADOR_HOME": "/workspaces/clipador-dados",
+    "CLIPADOR_HOST": "0.0.0.0",
+    "CLIPADOR_PORTA": "8777",
+    "CLIPADOR_NUVEM": "1"
+  },
+  "hostRequirements": {
+    "cpus": 2,
+    "memory": "8gb",
+    "storage": "32gb"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python"
+      ]
+    }
+  }
+}
