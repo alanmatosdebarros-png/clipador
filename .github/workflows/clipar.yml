@@ -92,5 +92,5 @@ jobs:
         with:
           name: clipes
           path: saida/
-          retention-days: 14
+          retention-days: 5
           if-no-files-found: warn
