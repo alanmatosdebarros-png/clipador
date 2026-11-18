@@ -3,9 +3,31 @@
 Pega a sua live de GTA na Twitch, acha os momentos sozinho, reenquadra pro vertical
 e deixa o clipe pronto com titulo, legenda e hashtags.
 
-Roda de dois jeitos: no navegador, sem instalar nada, ou no seu Mac.
+Roda de tres jeitos: o GitHub monta tudo sozinho, a tela do app no
+navegador, ou instalado no seu Mac.
 
-## Jeito 1: no navegador, sem instalar nada (recomendado)
+## Jeito 1: o GitHub monta os clipes pra voce (nao precisa de nada)
+
+Nao instala nada, nao abre editor nenhum. Voce da o link do VOD e volta depois
+pra baixar os clipes prontos.
+
+1. Aba **Actions** aqui em cima.
+2. Na lista da esquerda, **Clipar uma live**.
+3. Botao **Run workflow**, cole o link do VOD, escolha quantos clipes quer e
+   clique em **Run workflow** de novo.
+4. Uma live de 4 horas leva mais ou menos 1 hora pra processar. Pode fechar a aba.
+5. Quando terminar, abra a execucao: embaixo tem **Artifacts**, com um arquivo
+   `clipes`. Baixa, e dentro estao os MP4 em 9:16, as capas e um `textos.json`
+   com titulo, legenda e hashtags de cada um.
+
+Na propria pagina da execucao aparece uma tabela com os momentos, a nota de cada
+um, por que foram marcados e as legendas prontas pra copiar.
+
+Se quiser titulo e legenda escritos pelo Claude em vez do texto automatico,
+va em Settings, Secrets and variables, Actions, e crie um segredo chamado
+`ANTHROPIC_API_KEY`. Sem isso ele continua funcionando, so com texto mais simples.
+
+## Jeito 2: a tela do app no navegador (Codespaces)
 
 O proprio GitHub roda o app numa maquina na nuvem e mostra a tela no seu navegador.
 
@@ -25,7 +47,7 @@ Diferenca pro Mac: na nuvem nao tem o chip da Apple, entao a transcricao e o
 render usam processador comum e demoram mais. Um clipe de 2min30 leva uns 4
 minutos pra montar em vez de menos de um.
 
-## Jeito 2: no seu Mac
+## Jeito 3: no seu Mac
 
 Baixe o `Instalar Clipador.command`, clique nele com o botao direito e escolha
 Abrir. Se o macOS bloquear mesmo assim, va em Ajustes do Sistema, Privacidade e
