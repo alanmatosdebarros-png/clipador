@@ -1,0 +1,26 @@
+{
+  "nome": "GTA VI (geometria ainda nao calibrada)",
+  "calibrado": false,
+  "resolucao_base": [1920, 1080],
+  "regioes": {
+    "minimapa":   {"x": 0.022, "y": 0.745, "w": 0.190, "h": 0.215},
+    "procurado":  {"x": 0.100, "y": 0.726, "w": 0.115, "h": 0.040},
+    "vida":       {"x": 0.055, "y": 0.944, "w": 0.150, "h": 0.012},
+    "colete":     {"x": 0.055, "y": 0.956, "w": 0.150, "h": 0.012},
+    "banner":     {"x": 0.100, "y": 0.330, "w": 0.800, "h": 0.330},
+    "killfeed":   {"x": 0.620, "y": 0.090, "w": 0.370, "h": 0.260},
+    "facecam":    null
+  },
+  "eventos": {
+    "morte":    ["WASTED", "VOCE MORREU", "VOCÊ MORREU", "MORREU"],
+    "preso":    ["BUSTED", "PRESO", "VOCE FOI PRESO"],
+    "missao":   ["MISSION PASSED", "MISSAO CONCLUIDA", "MISSÃO CONCLUÍDA", "MISSION FAILED", "MISSAO FRACASSADA"],
+    "eliminou": ["ELIMINATED", "ELIMINADO", "ELIMINOU"],
+    "corrida":  ["FINISHED", "TERMINOU", "1ST", "1º"],
+    "assalto":  ["HEIST", "GOLPE", "ASSALTO"]
+  },
+  "peso_evento": {
+    "morte": 1.0, "preso": 0.95, "missao": 0.8,
+    "eliminou": 0.7, "corrida": 0.6, "assalto": 0.85
+  }
+}

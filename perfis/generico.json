@@ -1,0 +1,11 @@
+{
+  "nome": "Qualquer jogo (so sinais universais)",
+  "calibrado": true,
+  "resolucao_base": [1920, 1080],
+  "regioes": {"minimapa": null, "procurado": null, "vida": null, "colete": null,
+              "banner": {"x": 0.08, "y": 0.28, "w": 0.84, "h": 0.44},
+              "killfeed": null, "facecam": null},
+  "eventos": {"derrota": ["YOU DIED", "DEFEAT", "DERROTA", "VOCE MORREU"],
+              "vitoria": ["VICTORY", "WINNER", "VITORIA", "VOCE VENCEU"]},
+  "peso_evento": {"derrota": 0.9, "vitoria": 1.0}
+}
