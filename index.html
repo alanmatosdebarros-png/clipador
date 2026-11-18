@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="pt-BR" data-tema="escuro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clipador</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%230d0d12'/><rect x='34' y='18' width='32' height='57' rx='6' fill='none' stroke='%237c5cff' stroke-width='6'/><path d='M44 38l16 9-16 9z' fill='%2336e8ff'/></svg>">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@700;800&display=swap">
+<style>
+:root{
+  --bg:#0A0A0E; --sup:#131319; --sup2:#1A1A23; --linha:#262633;
+  --txt:#ECECF3; --mudo:#92929F; --fraco:#5E5E6E;
+  --cor:#7C5CFF; --cor2:#36E8FF; --ok:#38D39F; --ruim:#FF5C7A; --aviso:#FFB547;
+  --corpo:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  --display:'Montserrat','Inter',system-ui,sans-serif;
+  --r:14px; --sombra:0 1px 0 rgba(255,255,255,.04), 0 8px 30px rgba(0,0,0,.45);
+  color-scheme:dark;
+}
+html[data-tema="claro"]{
+  --bg:#F5F5F8; --sup:#FFFFFF; --sup2:#FAFAFD; --linha:#E4E4EE;
+  --txt:#15151C; --mudo:#64646F; --fraco:#9A9AA6;
+  --cor:#6244F5; --cor2:#0E9FC0; --ok:#12A36F;
+  --sombra:0 1px 2px rgba(16,16,30,.06), 0 10px 30px rgba(16,16,30,.07);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);font-family:var(--corpo);font-size:15px;
+  line-height:1.5;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--cor2);outline-offset:2px;border-radius:6px}
+a{color:var(--cor2);text-decoration:none}
+
+header{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 90%,transparent);
+  backdrop-filter:blur(14px);border-bottom:1px solid var(--linha)}
+.topo{max-width:1180px;margin:0 auto;padding:13px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.marca{display:flex;align-items:center;gap:9px;font-family:var(--display);font-weight:800;
+  letter-spacing:-.02em;font-size:17px}
+.ponto{width:11px;height:11px;border-radius:50%;background:linear-gradient(135deg,var(--cor),var(--cor2))}
+.direita{margin-left:auto;display:flex;align-items:center;gap:9px}
+.chip{font-size:12px;color:var(--mudo);border:1px solid var(--linha);border-radius:999px;
+  padding:5px 11px;background:var(--sup);white-space:nowrap}
+.chip.vivo{color:var(--txt);border-color:var(--ok)}
+.icone{width:34px;height:34px;border-radius:10px;border:1px solid var(--linha);background:var(--sup);
+  cursor:pointer;display:grid;place-items:center;font-size:15px}
+
+main{max-width:1180px;margin:0 auto;padding:26px 20px 80px}
+h1{font-family:var(--display);font-size:clamp(22px,4vw,28px);font-weight:800;letter-spacing:-.03em;
+  margin:0 0 6px}
+h2{font-family:var(--display);font-size:16px;font-weight:700;margin:32px 0 12px}
+p.sub{color:var(--mudo);margin:0 0 22px;max-width:62ch}
+
+.cartao{background:var(--sup);border:1px solid var(--linha);border-radius:var(--r);padding:18px;
+  box-shadow:var(--sombra)}
+.linha{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+.cresce{flex:1;min-width:200px}
+input[type=text],input[type=password],select{width:100%;background:var(--sup2);
+  border:1px solid var(--linha);border-radius:10px;padding:11px 13px;outline:none;min-width:0}
+input:focus,select:focus{border-color:var(--cor);box-shadow:0 0 0 3px color-mix(in srgb,var(--cor) 22%,transparent)}
+label.campo{display:block;font-size:11.5px;color:var(--mudo);margin:0 0 5px;letter-spacing:.02em}
+.bt{background:var(--cor);color:#fff;border:none;border-radius:10px;padding:11px 18px;font-weight:600;
+  cursor:pointer;transition:.15s}
+.bt:hover{filter:brightness(1.1)}
+.bt:disabled{opacity:.45;cursor:not-allowed}
+.bt.ghost{background:var(--sup2);color:var(--txt);border:1px solid var(--linha)}
+.bt.pequeno{padding:7px 12px;font-size:13px}
+
+.grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.clipe{background:var(--sup);border:1px solid var(--linha);border-radius:var(--r);overflow:hidden;
+  box-shadow:var(--sombra);display:flex;flex-direction:column;min-width:0}
+.clipe video{width:100%;aspect-ratio:9/16;object-fit:contain;background:#000;display:block;
+  border-bottom:1px solid var(--linha)}
+.clipe .corpo{padding:13px;display:flex;flex-direction:column;gap:9px;flex:1}
+.clipe .tit{font-family:var(--display);font-weight:700;font-size:14.5px;line-height:1.25}
+.clipe .leg{color:var(--mudo);font-size:13px}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:11.5px;background:var(--sup2);border:1px solid var(--linha);border-radius:999px;padding:3px 9px}
+.acoes{display:flex;gap:8px;margin-top:auto;flex-wrap:wrap}
+
+.lote{margin:26px 0 0}
+.lote h3{font-family:var(--display);font-size:15px;margin:0 0 4px;font-weight:700}
+.lote .quando{color:var(--fraco);font-size:12.5px;margin-bottom:12px}
+.vazio{border:1px dashed var(--linha);border-radius:var(--r);padding:40px 24px;text-align:center;
+  color:var(--mudo)}
+.aviso{background:color-mix(in srgb,var(--aviso) 12%,transparent);
+  border:1px solid color-mix(in srgb,var(--aviso) 34%,transparent);border-radius:12px;
+  padding:12px 14px;font-size:13.5px;margin-top:12px}
+.passos{margin:10px 0 0;padding-left:20px;color:var(--mudo);font-size:13.5px}
+.passos li{margin:5px 0}
+details summary{cursor:pointer;color:var(--mudo);font-size:13.5px}
+@media (max-width:420px){ main{padding:20px 16px 70px} }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="topo">
+    <div class="marca"><span class="ponto"></span> Clipador</div>
+    <div class="direita">
+      <span class="chip" id="chipEstado">carregando</span>
+      <button class="icone" id="btTema" aria-label="Alternar tema">◐</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <h1>Seus clipes</h1>
+  <p class="sub">O Clipador olha seu canal na Twitch de 6 em 6 horas, acha os melhores momentos
+  da live, corta em 9:16 com legenda e deixa tudo aqui, pronto pra baixar e postar.</p>
+
+  <div class="cartao">
+    <div class="linha">
+      <div class="cresce">
+        <label class="campo" for="vod">clipar uma live agora (cole o link do VOD)</label>
+        <input type="text" id="vod" placeholder="https://www.twitch.tv/videos/...">
+      </div>
+      <div style="width:150px;min-width:120px">
+        <label class="campo" for="quantos">quantos clipes</label>
+        <select id="quantos">
+          <option>4</option><option selected>6</option><option>8</option><option>10</option>
+        </select>
+      </div>
+      <button class="bt" id="btClipar">Clipar</button>
+    </div>
+    <div id="recado" style="margin-top:12px;font-size:13.5px;color:var(--mudo)"></div>
+    <div id="conectar" hidden>
+      <div class="aviso">
+        Pra disparar daqui, o site precisa de uma chave da sua conta do GitHub. Ela fica salva
+        só no seu navegador e não sai dele. Isso é opcional: o Clipador roda sozinho de 6 em 6
+        horas de qualquer jeito.
+        <ol class="passos">
+          <li>Abra <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">esta página do GitHub</a>.</li>
+          <li>Em Repository access, escolha Only select repositories e marque <b>clipador</b>.</li>
+          <li>Em Permissions, Repository permissions, ponha <b>Actions</b> em Read and write.</li>
+          <li>Gere a chave, copie e cole aqui embaixo.</li>
+        </ol>
+      </div>
+      <div class="linha" style="margin-top:12px">
+        <div class="cresce">
+          <label class="campo" for="chave">chave (fica só neste navegador)</label>
+          <input type="password" id="chave" placeholder="github_pat_...">
+        </div>
+        <button class="bt ghost" id="btSalvarChave">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="lista"></div>
+</main>
+
+<script>
+const DONO = "alanmatosdebarros-png";
+const REPO = "clipador";
+const API = `https://api.github.com/repos/${DONO}/${REPO}`;
+const $ = (s) => document.querySelector(s);
+
+/* tema */
+try { const t = localStorage.getItem("clipador_tema"); if (t) document.documentElement.dataset.tema = t; } catch (e) {}
+$("#btTema").onclick = () => {
+  const novo = document.documentElement.dataset.tema === "escuro" ? "claro" : "escuro";
+  document.documentElement.dataset.tema = novo;
+  try { localStorage.setItem("clipador_tema", novo); } catch (e) {}
+};
+
+const chave = () => { try { return localStorage.getItem("clipador_chave") || ""; } catch (e) { return ""; } };
+const recado = (t) => { $("#recado").textContent = t; };
+
+/* separa titulo, legenda e hashtags do corpo do lote */
+function lerCorpo(corpo) {
+  const mapa = {};
+  const linhas = (corpo || "").split("\n");
+  for (let i = 0; i < linhas.length; i++) {
+    const m = linhas[i].match(/^\*\*(\d+)\.\s*(.+?)\*\*\s*$/);
+    if (!m) continue;
+    let legenda = "";
+    for (let j = i + 1; j < Math.min(i + 4, linhas.length); j++) {
+      if (linhas[j].trim()) { legenda = linhas[j].trim(); break; }
+    }
+    const tags = (legenda.match(/#[\wáéíóúâêôãõç]+/gi) || []);
+    mapa[Number(m[1])] = {
+      titulo: m[2],
+      legenda: legenda.replace(/#[\wáéíóúâêôãõç]+/gi, "").trim(),
+      tags: tags.map(t => t.slice(1)),
+    };
+  }
+  return mapa;
+}
+
+const quando = (iso) => {
+  const d = new Date(iso);
+  return d.toLocaleString("pt-BR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" });
+};
+
+async function carregar() {
+  let lotes = [];
+  try {
+    const r = await fetch(`${API}/releases?per_page=20`, { headers: { Accept: "application/vnd.github+json" } });
+    if (r.ok) lotes = await r.json();
+  } catch (e) {}
+
+  const alvo = $("#lista");
+  const comClipes = lotes.filter(l => (l.assets || []).some(a => a.name.endsWith(".mp4")));
+  if (!comClipes.length) {
+    alvo.innerHTML = `<div class="vazio">
+      Nenhum clipe ainda.<br><br>
+      Assim que você transmitir e a Twitch guardar o VOD, o Clipador pega sozinho
+      e os clipes aparecem aqui. Se quiser adiantar, cole o link de um VOD lá em cima.
+    </div>`;
+    return;
+  }
+
+  alvo.innerHTML = comClipes.map(lote => {
+    const textos = lerCorpo(lote.body);
+    const mp4 = (lote.assets || []).filter(a => a.name.endsWith(".mp4"))
+      .sort((a, b) => a.name.localeCompare(b.name));
+    const cartoes = mp4.map((a, i) => {
+      const n = Number((a.name.match(/^(\d+)/) || [])[1] || i + 1);
+      const t = textos[n] || { titulo: a.name.replace(/\.mp4$/, ""), legenda: "", tags: [] };
+      const capa = (lote.assets || []).find(x => x.name === a.name.replace(/\.mp4$/, ".jpg"));
+      return `<article class="clipe">
+        <video controls preload="none" ${capa ? `poster="${capa.browser_download_url}"` : ""}
+               src="${a.browser_download_url}"></video>
+        <div class="corpo">
+          <div class="tit">${t.titulo}</div>
+          ${t.legenda ? `<div class="leg">${t.legenda}</div>` : ""}
+          <div class="tags">${t.tags.map(x => `<span class="tag">#${x}</span>`).join("")}</div>
+          <div class="acoes">
+            <a class="bt pequeno" href="${a.browser_download_url}" download>Baixar</a>
+            <button class="bt ghost pequeno" data-copiar="${encodeURIComponent((t.legenda + " " + t.tags.map(x => "#" + x).join(" ")).trim())}">Copiar legenda</button>
+          </div>
+        </div>
+      </article>`;
+    }).join("");
+    return `<section class="lote">
+      <h3>${lote.name || lote.tag_name}</h3>
+      <div class="quando">${quando(lote.published_at)} · ${mp4.length} clipes</div>
+      <div class="grade">${cartoes}</div>
+    </section>`;
+  }).join("");
+
+  alvo.addEventListener("click", async (e) => {
+    const b = e.target.closest("[data-copiar]");
+    if (!b) return;
+    try {
+      await navigator.clipboard.writeText(decodeURIComponent(b.dataset.copiar));
+      b.textContent = "copiado";
+      setTimeout(() => b.textContent = "Copiar legenda", 1600);
+    } catch (err) { b.textContent = "copie na mão"; }
+  }, { once: false });
+}
+
+async function estado() {
+  try {
+    const r = await fetch(`${API}/actions/runs?per_page=1`, { headers: { Accept: "application/vnd.github+json" } });
+    if (!r.ok) return;
+    const d = await r.json();
+    const run = (d.workflow_runs || [])[0];
+    if (!run) return;
+    const c = $("#chipEstado");
+    if (run.status !== "completed") {
+      c.textContent = "montando clipes agora";
+      c.classList.add("vivo");
+      setTimeout(() => { estado(); carregar(); }, 30000);
+    } else {
+      c.textContent = run.conclusion === "success" ? "em dia" : "última rodada falhou";
+      c.classList.toggle("vivo", run.conclusion === "success");
+    }
+  } catch (e) {}
+}
+
+$("#btSalvarChave").onclick = () => {
+  const v = $("#chave").value.trim();
+  if (!v) return;
+  try { localStorage.setItem("clipador_chave", v); } catch (e) {}
+  $("#chave").value = "";
+  $("#conectar").hidden = true;
+  recado("chave guardada. Pode clicar em Clipar.");
+};
+
+$("#btClipar").onclick = async () => {
+  const vod = $("#vod").value.trim();
+  if (!vod) { recado("cole o link do VOD primeiro"); return; }
+  if (!chave()) { $("#conectar").hidden = false; recado("falta conectar sua conta, uma vez só."); return; }
+  recado("mandando...");
+  try {
+    const r = await fetch(`${API}/actions/workflows/clipar.yml/dispatches`, {
+      method: "POST",
+      headers: {
+        Accept: "application/vnd.github+json",
+        Authorization: `Bearer ${chave()}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ref: "main", inputs: { vod, quantos: $("#quantos").value, perfil: "gta6" } }),
+    });
+    if (r.status === 204) {
+      recado("na fila. Uma live de 4 horas leva mais ou menos 1 hora. Pode fechar o site, os clipes aparecem aqui.");
+      $("#vod").value = "";
+      setTimeout(estado, 8000);
+    } else if (r.status === 401 || r.status === 403) {
+      recado("a chave não foi aceita. Gere outra com permissão de Actions no repositório clipador.");
+      $("#conectar").hidden = false;
+    } else {
+      recado("não consegui mandar (" + r.status + ")");
+    }
+  } catch (e) {
+    recado("não consegui mandar: " + e.message);
+  }
+};
+
+carregar();
+estado();
+</script>
+</body>
+</html>
