@@ -263,11 +263,11 @@ class Mao(BaseHTTPRequestHandler):
         return self._json({"erro": "rota desconhecida"}, 404)
 
 
-def subir(porta: int = 8777) -> ThreadingHTTPServer:
+def subir(porta: int = 8777, host: str = "127.0.0.1") -> ThreadingHTTPServer:
     for p in (config.PASTA_PERFIS,):
         for origem in (Path(__file__).resolve().parent.parent / "perfis").glob("*.json"):
             alvo = p / origem.name
             if not alvo.exists():
                 alvo.write_text(origem.read_text("utf-8"), "utf-8")
-    s = ThreadingHTTPServer(("127.0.0.1", porta), Mao)
+    s = ThreadingHTTPServer((host, porta), Mao)
     return s
