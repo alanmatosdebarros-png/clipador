@@ -80,6 +80,7 @@ def main() -> int:
     plat = config.detectar()
     cfg = config.carregar()
     cfg.update({"perfil_hud": a.perfil, "duracao_alvo": a.alvo,
+                "intervalo_minimo": max(30, int(a.alvo)),
                 "duracao_minima": a.minimo, "duracao_maxima": a.maximo,
                 "chave_claude": os.environ.get("ANTHROPIC_API_KEY", ""),
                 "usar_claude": bool(os.environ.get("ANTHROPIC_API_KEY"))})
