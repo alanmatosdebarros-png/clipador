@@ -1,28 +1,34 @@
-name: Clipar uma live
+name: Clipador
 
 on:
+  schedule:
+    # de 6 em 6 horas: procura live nova sozinho
+    - cron: "17 */6 * * *"
   workflow_dispatch:
     inputs:
       vod:
-        description: "Link do VOD da Twitch (ou escreva teste pra um ensaio de 3 min)"
-        required: true
+        description: "Link de um VOD especifico (deixe vazio pra pegar a live mais nova)"
+        required: false
+        default: ""
         type: string
       quantos:
         description: "Quantos clipes montar"
-        required: true
+        required: false
         default: "6"
         type: string
       perfil:
         description: "Perfil de HUD do jogo"
-        required: true
+        required: false
         default: "gta6"
         type: choice
         options: [gta6, gta5, generico]
-      duracao:
-        description: "Duracao alvo de cada clipe, em segundos"
-        required: true
-        default: "150"
-        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: clipador
+  cancel-in-progress: false
 
 jobs:
   clipar:
@@ -32,62 +38,95 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Procurar live nova
+        id: achar
+        run: |
+          pip install --quiet yt-dlp
+          if [ -n "${{ inputs.vod }}" ]; then
+            echo "vod=${{ inputs.vod }}" >> "$GITHUB_OUTPUT"
+            echo "titulo=live escolhida na mao" >> "$GITHUB_OUTPUT"
+            echo "id=manual-${{ github.run_id }}" >> "$GITHUB_OUTPUT"
+          else
+            python achar_vod.py
+          fi
+
       - name: Liberar espaco em disco
+        if: steps.achar.outputs.vod != ''
         run: |
           sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc \
                       /usr/local/share/boost "$AGENT_TOOLSDIRECTORY" || true
           sudo apt-get clean
           df -h /
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
       - name: Instalar o que o Clipador precisa
+        if: steps.achar.outputs.vod != ''
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq ffmpeg tesseract-ocr tesseract-ocr-por tesseract-ocr-eng
-          python -m pip install --quiet --upgrade pip
-          pip install --quiet numpy Pillow yt-dlp pytesseract faster-whisper
-          ffmpeg -version | head -1
-          tesseract --version | head -1
-
-      - name: Video de ensaio (so quando vod = teste)
-        if: ${{ inputs.vod == 'teste' }}
-        run: |
-          ffmpeg -hide_banner -loglevel error -y \
-            -f lavfi -i "testsrc2=size=1280x720:rate=30:duration=180" \
-            -f lavfi -i "anoisesrc=d=180:c=pink:a=0.05" \
-            -f lavfi -i "sine=f=700:d=180" \
-            -filter_complex "[0:v]drawbox=x='150+700*abs(sin(t/25))':y=240:w=240:h=240:color=orange@0.95:t=fill[v]; \
-              [2:a]volume='if(between(t,40,50)+between(t,120,132),1.0,0.02)':eval=frame[s]; \
-              [1:a][s]amix=inputs=2:duration=first[a]" \
-            -map "[v]" -map "[a]" -c:v libx264 -preset ultrafast -c:a aac ensaio.mp4
-          ls -lh ensaio.mp4
+          pip install --quiet numpy Pillow pytesseract faster-whisper
 
       - name: Achar os momentos e montar os clipes
+        if: steps.achar.outputs.vod != ''
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           CLIPADOR_HOME: ${{ github.workspace }}/dados
           CLIPADOR_SAIDA: ${{ github.workspace }}/saida
         run: |
-          if [ "${{ inputs.vod }}" = "teste" ]; then
-            python nuvem.py --arquivo ensaio.mp4 --quantos 2 \
-              --perfil "${{ inputs.perfil }}" --alvo 60 --minimo 30 --maximo 90
-          else
-            python nuvem.py \
-              --vod "${{ inputs.vod }}" \
-              --quantos "${{ inputs.quantos }}" \
-              --perfil "${{ inputs.perfil }}" \
-              --alvo "${{ inputs.duracao }}"
+          python nuvem.py \
+            --vod "${{ steps.achar.outputs.vod }}" \
+            --quantos "${{ inputs.quantos || '6' }}" \
+            --perfil "${{ inputs.perfil || 'gta6' }}" \
+            --alvo 150
+
+      - name: Publicar os clipes
+        if: steps.achar.outputs.vod != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! ls saida/*.mp4 >/dev/null 2>&1; then
+            echo "nenhum clipe foi gerado"
+            exit 0
           fi
+          TAG="clipes-$(date -u +%Y%m%d-%H%M)"
+          TITULO="${{ steps.achar.outputs.titulo }}"
+          {
+            echo "Clipes de: $TITULO"
+            echo ""
+            echo "Baixe os MP4 em Assets, aqui embaixo. Cada clipe tem uma capa .jpg"
+            echo "com o mesmo numero. Os titulos, legendas e hashtags estao no textos.json."
+            echo ""
+            if [ -f saida/textos.json ]; then
+              python - <<'PY'
+import json, pathlib
+d = json.loads(pathlib.Path("saida/textos.json").read_text("utf-8"))
+for i, c in enumerate(d, 1):
+    tags = " ".join("#" + h for h in c.get("hashtags", []))
+    print(f"**{i}. {c['titulo']}**")
+    print("")
+    print(f"{c.get('legenda','')} {tags}".strip())
+    print("")
+PY
+            fi
+          } > corpo.md
+          gh release create "$TAG" saida/*.mp4 saida/*.jpg saida/textos.json \
+            --title "$TITULO" --notes-file corpo.md
 
-      - name: Mostrar o que sobrou de disco
-        if: always()
-        run: df -h / && du -sh saida 2>/dev/null || true
+      - name: Anotar que essa live ja foi clipada
+        if: steps.achar.outputs.vod != '' && github.event_name == 'schedule'
+        run: |
+          echo "${{ steps.achar.outputs.id }}" >> processados.txt
+          git config user.name "Clipador"
+          git config user.email "clipador@users.noreply.github.com"
+          git add processados.txt
+          git commit -m "Clipada a live ${{ steps.achar.outputs.id }}" || exit 0
+          git push
 
-      - name: Guardar os clipes pra baixar
-        if: always()
+      - name: Guardar tambem como anexo da execucao
+        if: always() && steps.achar.outputs.vod != ''
         uses: actions/upload-artifact@v4
         with:
           name: clipes
