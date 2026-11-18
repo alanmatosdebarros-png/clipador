@@ -1,22 +1,38 @@
 # Clipador
 
 Pega a sua live de GTA na Twitch, acha os momentos sozinho, reenquadra pro vertical
-e deixa o clipe pronto com titulo, legenda e hashtags. Roda inteiro no seu Mac.
-Nada sobe pra servidor nenhum.
+e deixa o clipe pronto com titulo, legenda e hashtags.
 
-Feito pro MacBook Neo (A18 Pro, 8 GB): usa o encoder de video do chip, a leitura de
-tela da Apple e a transcricao no Neural Engine, e apaga o video bruto quando voce manda.
+Roda de dois jeitos: no navegador, sem instalar nada, ou no seu Mac.
 
-## Instalar
+## Jeito 1: no navegador, sem instalar nada (recomendado)
 
-1. Descompacte a pasta onde voce quiser guardar (Documentos, por exemplo).
-2. Clique com o botao direito em `instalar.command` e escolha **Abrir**.
-   Na primeira vez o macOS pergunta se pode. Pode.
-3. Espera terminar. No fim ele mostra o que entrou e o que faltou.
-4. Abre o **Clipador** pelo Launchpad.
+O proprio GitHub roda o app numa maquina na nuvem e mostra a tela no seu navegador.
 
-O app abre uma tela no navegador, em `http://127.0.0.1:8777`. Isso e local,
-nao e site.
+1. Nesta pagina do repositorio, clique no botao verde **Code**.
+2. Aba **Codespaces**, botao **Create codespace on main**.
+3. Espera de 3 a 5 minutos na primeira vez. Ele instala tudo sozinho.
+4. A tela do Clipador abre numa aba de visualizacao do lado. Se nao abrir,
+   va na aba **PORTS** embaixo, porta 8777, e clique no icone de globo.
+
+Pra pegar os clipes prontos: no explorador de arquivos da esquerda, abra
+`clipador-dados/clipes`, clique com o botao direito no MP4 e escolha **Download**.
+
+Quando terminar, volte em **Code > Codespaces** e pare o codespace, pra nao
+gastar as horas gratuitas (60 horas por mes numa maquina de 2 nucleos).
+
+Diferenca pro Mac: na nuvem nao tem o chip da Apple, entao a transcricao e o
+render usam processador comum e demoram mais. Um clipe de 2min30 leva uns 4
+minutos pra montar em vez de menos de um.
+
+## Jeito 2: no seu Mac
+
+Baixe o `Instalar Clipador.command`, clique nele com o botao direito e escolha
+Abrir. Se o macOS bloquear mesmo assim, va em Ajustes do Sistema, Privacidade e
+Seguranca, role ate o aviso sobre o arquivo e clique em **Abrir Assim Mesmo**.
+
+Rodando no Mac ele fica bem mais rapido: usa o encoder de video do chip e a
+transcricao no Neural Engine.
 
 ## Antes da primeira live
 
