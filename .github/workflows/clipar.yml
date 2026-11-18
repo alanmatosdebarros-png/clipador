@@ -7,14 +7,14 @@ on:
   workflow_dispatch:
     inputs:
       vod:
-        description: "Link de um VOD especifico (deixe vazio pra pegar a live mais nova)"
+        description: "Link de qualquer live ou VOD da Twitch (vazio = a live mais nova do canal rastreado)"
         required: false
         default: ""
         type: string
       quantos:
         description: "Quantos clipes montar"
         required: false
-        default: "6"
+        default: "10"
         type: string
       perfil:
         description: "Perfil de HUD do jogo"
@@ -78,7 +78,7 @@ jobs:
         run: |
           python nuvem.py \
             --vod "${{ steps.achar.outputs.vod }}" \
-            --quantos "${{ inputs.quantos || '6' }}" \
+            --quantos "${{ inputs.quantos || '10' }}" \
             --perfil "${{ inputs.perfil || 'gta6' }}" \
             --alvo 150
 
@@ -93,25 +93,7 @@ jobs:
           fi
           TAG="clipes-$(date -u +%Y%m%d-%H%M)"
           TITULO="${{ steps.achar.outputs.titulo }}"
-          {
-            echo "Clipes de: $TITULO"
-            echo ""
-            echo "Baixe os MP4 em Assets, aqui embaixo. Cada clipe tem uma capa .jpg"
-            echo "com o mesmo numero. Os titulos, legendas e hashtags estao no textos.json."
-            echo ""
-            if [ -f saida/textos.json ]; then
-              python - <<'PY'
-import json, pathlib
-d = json.loads(pathlib.Path("saida/textos.json").read_text("utf-8"))
-for i, c in enumerate(d, 1):
-    tags = " ".join("#" + h for h in c.get("hashtags", []))
-    print(f"**{i}. {c['titulo']}**")
-    print("")
-    print(f"{c.get('legenda','')} {tags}".strip())
-    print("")
-PY
-            fi
-          } > corpo.md
+          python corpo_release.py "$TITULO"
           gh release create "$TAG" saida/*.mp4 saida/*.jpg saida/textos.json \
             --title "$TITULO" --notes-file corpo.md
 
