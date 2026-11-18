@@ -4,147 +4,243 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Clipador</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%230d0d12'/><rect x='34' y='18' width='32' height='57' rx='6' fill='none' stroke='%237c5cff' stroke-width='6'/><path d='M44 38l16 9-16 9z' fill='%2336e8ff'/></svg>">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@700;800&display=swap">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='28' fill='%236b4eff'/><circle cx='50' cy='50' r='18' fill='%23fff'/></svg>">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap">
 <style>
 :root{
-  --bg:#0A0A0E; --sup:#131319; --sup2:#1A1A23; --linha:#262633;
-  --txt:#ECECF3; --mudo:#92929F; --fraco:#5E5E6E;
-  --cor:#7C5CFF; --cor2:#36E8FF; --ok:#38D39F; --ruim:#FF5C7A; --aviso:#FFB547;
-  --corpo:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
-  --display:'Montserrat','Inter',system-ui,sans-serif;
-  --r:14px; --sombra:0 1px 0 rgba(255,255,255,.04), 0 8px 30px rgba(0,0,0,.45);
+  --bg:#0A0711; --sup:#140F1F; --sup2:#1C1529; --linha:#2B2040;
+  --txt:#F6F1FF; --mudo:#A294BF; --fraco:#6B5C87;
+  --violeta:#FF2D95; --violeta2:#FF7A1A; --azul:#22E1FF;
+  --ok:#3BE08A; --alerta:#FFC83D;
+  --display:'Poppins',system-ui,sans-serif;
+  --corpo:'Inter',system-ui,sans-serif;
+  --r:20px; --sombra:0 1px 0 rgba(255,255,255,.05), 0 14px 38px rgba(0,0,0,.55);
   color-scheme:dark;
 }
 html[data-tema="claro"]{
-  --bg:#F5F5F8; --sup:#FFFFFF; --sup2:#FAFAFD; --linha:#E4E4EE;
-  --txt:#15151C; --mudo:#64646F; --fraco:#9A9AA6;
-  --cor:#6244F5; --cor2:#0E9FC0; --ok:#12A36F;
-  --sombra:0 1px 2px rgba(16,16,30,.06), 0 10px 30px rgba(16,16,30,.07);
+  --bg:#FFF6F0; --sup:#FFFFFF; --sup2:#FDEEE6; --linha:#F2D9CB;
+  --txt:#1A0E22; --mudo:#7A5E78; --fraco:#A78FA6;
+  --sombra:0 1px 2px rgba(60,20,60,.06), 0 10px 30px rgba(60,20,60,.08);
   color-scheme:light;
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--txt);font-family:var(--corpo);font-size:15px;
   line-height:1.5;-webkit-font-smoothing:antialiased}
-button,input,select,textarea{font:inherit;color:inherit}
-:focus-visible{outline:2px solid var(--cor2);outline-offset:2px;border-radius:6px}
-a{color:var(--cor2);text-decoration:none}
+button,input,select{font:inherit;color:inherit}
+a{text-decoration:none;color:inherit}
+:focus-visible{outline:2px solid var(--violeta);outline-offset:2px;border-radius:8px}
 
-header{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 90%,transparent);
-  backdrop-filter:blur(14px);border-bottom:1px solid var(--linha)}
-.topo{max-width:1180px;margin:0 auto;padding:13px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-.marca{display:flex;align-items:center;gap:9px;font-family:var(--display);font-weight:800;
-  letter-spacing:-.02em;font-size:17px}
-.ponto{width:11px;height:11px;border-radius:50%;background:linear-gradient(135deg,var(--cor),var(--cor2))}
-.direita{margin-left:auto;display:flex;align-items:center;gap:9px}
-.chip{font-size:12px;color:var(--mudo);border:1px solid var(--linha);border-radius:999px;
-  padding:5px 11px;background:var(--sup);white-space:nowrap}
-.chip.vivo{color:var(--txt);border-color:var(--ok)}
-.icone{width:34px;height:34px;border-radius:10px;border:1px solid var(--linha);background:var(--sup);
-  cursor:pointer;display:grid;place-items:center;font-size:15px}
+/* barra de cima */
+header{position:sticky;top:0;z-index:40;
+  background:linear-gradient(90deg,
+    color-mix(in srgb,#FF2D95 16%,var(--bg)),
+    color-mix(in srgb,#FF7A1A 12%,var(--bg)) 48%,
+    color-mix(in srgb,#22E1FF 14%,var(--bg)));
+  backdrop-filter:blur(16px);border-bottom:1px solid var(--linha)}
+.fx{max-width:1120px;margin:0 auto;padding:0 20px}
+.barra1{display:flex;align-items:center;gap:14px;padding:14px 0}
+.logo{display:flex;align-items:center;gap:11px;font-family:var(--display);font-weight:800;
+  font-size:21px;letter-spacing:-.02em}
+.selo{width:30px;height:30px;border-radius:11px;
+  background:linear-gradient(140deg,#FFC83D,#FF2D95 55%,#7A1FD1);
+  display:grid;place-items:center}
+.selo i{width:11px;height:11px;border-radius:50%;background:#fff;display:block}
+.dir{margin-left:auto;display:flex;align-items:center;gap:10px}
+.pilula{display:flex;align-items:center;gap:8px;background:var(--sup);border:1px solid var(--linha);
+  border-radius:999px;padding:6px 14px 6px 7px;font-weight:600;font-size:14px;white-space:nowrap}
+.pilula .bola{width:20px;height:20px;border-radius:50%;
+  background:linear-gradient(140deg,#22E1FF,#FF2D95)}
+.criar{display:flex;align-items:center;gap:8px;border:none;cursor:pointer;color:#fff;
+  background:linear-gradient(100deg,#FF2D95,#FF7A1A);
+  border-radius:999px;padding:11px 20px;font-weight:700;letter-spacing:.01em;
+  box-shadow:0 6px 22px rgba(255,45,149,.42)}
+.criar:hover{filter:brightness(1.07)}
+.redondo{width:34px;height:34px;border-radius:50%;border:1px solid var(--linha);background:var(--sup);
+  cursor:pointer;display:grid;place-items:center;font-size:14px}
+.barra2{display:flex;gap:26px;padding:0 0 12px;overflow-x:auto;scrollbar-width:none}
+.barra2::-webkit-scrollbar{display:none}
+.aba{background:none;border:none;cursor:pointer;color:var(--mudo);font-weight:500;font-size:15px;
+  padding:4px 0;white-space:nowrap;border-bottom:2px solid transparent}
+.aba[aria-selected="true"]{color:var(--txt);font-weight:600;border-bottom-color:#FF2D95}
 
-main{max-width:1180px;margin:0 auto;padding:26px 20px 80px}
-h1{font-family:var(--display);font-size:clamp(22px,4vw,28px);font-weight:800;letter-spacing:-.03em;
-  margin:0 0 6px}
-h2{font-family:var(--display);font-size:16px;font-weight:700;margin:32px 0 12px}
-p.sub{color:var(--mudo);margin:0 0 22px;max-width:62ch}
+main{max-width:1120px;margin:0 auto;padding:30px 20px 90px}
+.olho{font-size:12px;color:var(--mudo);font-weight:600;margin-bottom:10px;
+  text-transform:uppercase;letter-spacing:.14em}
+.hero{font-family:var(--display);font-weight:800;font-size:clamp(28px,5.4vw,42px);
+  letter-spacing:-.035em;line-height:1.08;margin:0 0 28px;text-wrap:balance}
+.hero span{background:linear-gradient(90deg,#FF2D95,#FF7A1A 45%,#22E1FF);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
 
-.cartao{background:var(--sup);border:1px solid var(--linha);border-radius:var(--r);padding:18px;
+.cartoes{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:18px}
+.bloco{position:relative;border-radius:var(--r);padding:22px;min-height:168px;color:#fff;
+  display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;
+  box-shadow:var(--sombra);cursor:pointer;border:none;text-align:left;font:inherit}
+.bloco h3{font-family:var(--display);font-weight:700;font-size:22px;margin:0 0 5px;letter-spacing:-.02em}
+.bloco p{margin:0;font-size:13.5px;opacity:.92}
+.b1{background:linear-gradient(140deg,#7A1FD1,#FF2D95 52%,#FF7A1A)}
+.b2{background:linear-gradient(140deg,#120B2E,#2C1B6B 45%,#22E1FF)}
+.b3{background:linear-gradient(140deg,#00C2A8,#0E7C5A 60%,#0A3B2E)}
+.b4{background:linear-gradient(140deg,#FFC83D,#FF7A1A 60%,#C2185B)}
+.bloco .forma{position:absolute;right:-18px;top:-22px;width:120px;height:120px;border-radius:30px;
+  background:rgba(255,255,255,.17);transform:rotate(18deg)}
+.bloco .forma2{position:absolute;right:26px;top:34px;width:58px;height:58px;border-radius:50%;
+  background:rgba(255,255,255,.2)}
+
+.titulosec{display:flex;align-items:baseline;gap:12px;margin:38px 0 14px}
+.titulosec h2{font-family:var(--display);font-weight:700;font-size:22px;letter-spacing:-.025em;margin:0}
+.titulosec a,.titulosec button{margin-left:auto;color:#22E1FF;font-weight:600;font-size:14px;
+  background:none;border:none;cursor:pointer}
+
+.painel{background:var(--sup);border:1px solid var(--linha);border-radius:var(--r);padding:20px;
   box-shadow:var(--sombra)}
-.linha{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
-.cresce{flex:1;min-width:200px}
+.linha{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
+.cresce{flex:1;min-width:210px}
+label.campo{display:block;font-size:12px;color:var(--mudo);margin:0 0 6px;font-weight:500}
 input[type=text],input[type=password],select{width:100%;background:var(--sup2);
-  border:1px solid var(--linha);border-radius:10px;padding:11px 13px;outline:none;min-width:0}
-input:focus,select:focus{border-color:var(--cor);box-shadow:0 0 0 3px color-mix(in srgb,var(--cor) 22%,transparent)}
-label.campo{display:block;font-size:11.5px;color:var(--mudo);margin:0 0 5px;letter-spacing:.02em}
-.bt{background:var(--cor);color:#fff;border:none;border-radius:10px;padding:11px 18px;font-weight:600;
-  cursor:pointer;transition:.15s}
-.bt:hover{filter:brightness(1.1)}
-.bt:disabled{opacity:.45;cursor:not-allowed}
-.bt.ghost{background:var(--sup2);color:var(--txt);border:1px solid var(--linha)}
-.bt.pequeno{padding:7px 12px;font-size:13px}
+  border:1px solid var(--linha);border-radius:12px;padding:12px 14px;outline:none;min-width:0}
+input:focus,select:focus{border-color:var(--violeta);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--violeta) 18%,transparent)}
+.bt{background:linear-gradient(100deg,#FF2D95,#FF7A1A);color:#fff;border:none;
+  border-radius:12px;padding:12px 20px;font-weight:600;cursor:pointer}
+.bt:hover{filter:brightness(1.07)}
+.bt.claro{background:var(--sup2);color:var(--txt);border:1px solid var(--linha)}
+.bt.mini{padding:8px 13px;font-size:13px;border-radius:10px}
 
-.grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:18px}
 .clipe{background:var(--sup);border:1px solid var(--linha);border-radius:var(--r);overflow:hidden;
   box-shadow:var(--sombra);display:flex;flex-direction:column;min-width:0}
-.clipe video{width:100%;aspect-ratio:9/16;object-fit:contain;background:#000;display:block;
-  border-bottom:1px solid var(--linha)}
-.clipe .corpo{padding:13px;display:flex;flex-direction:column;gap:9px;flex:1}
-.clipe .tit{font-family:var(--display);font-weight:700;font-size:14.5px;line-height:1.25}
+.clipe .tela{position:relative;background:#000}
+.clipe video{width:100%;aspect-ratio:9/16;object-fit:contain;display:block}
+.selo2{position:absolute;top:10px;left:10px;background:rgba(10,10,16,.78);color:#fff;
+  border-radius:999px;padding:4px 10px;font-size:11.5px;font-weight:600;
+  display:flex;align-items:center;gap:6px}
+.selo2 i{width:7px;height:7px;border-radius:50%;background:#3BE08A;display:block;
+  box-shadow:0 0 8px #3BE08A}
+.formato{position:absolute;bottom:10px;right:10px;background:rgba(10,10,16,.72);color:#fff;
+  border-radius:8px;padding:3px 8px;font-size:11px}
+.clipe .txt{padding:14px;display:flex;flex-direction:column;gap:8px;flex:1}
+.clipe .nome{font-family:var(--display);font-weight:600;font-size:15px;line-height:1.3;
+  letter-spacing:-.01em}
 .clipe .leg{color:var(--mudo);font-size:13px}
-.tags{display:flex;gap:6px;flex-wrap:wrap}
-.tag{font-size:11.5px;background:var(--sup2);border:1px solid var(--linha);border-radius:999px;padding:3px 9px}
+.marcas{display:flex;gap:6px;flex-wrap:wrap}
+.marca{font-size:11.5px;border-radius:999px;padding:3px 10px;font-weight:600;
+  background:color-mix(in srgb,#22E1FF 14%,transparent);color:#22E1FF}
+.marca.cinza{background:var(--sup2);color:var(--mudo)}
 .acoes{display:flex;gap:8px;margin-top:auto;flex-wrap:wrap}
 
-.lote{margin:26px 0 0}
-.lote h3{font-family:var(--display);font-size:15px;margin:0 0 4px;font-weight:700}
-.lote .quando{color:var(--fraco);font-size:12.5px;margin-bottom:12px}
-.vazio{border:1px dashed var(--linha);border-radius:var(--r);padding:40px 24px;text-align:center;
-  color:var(--mudo)}
-.aviso{background:color-mix(in srgb,var(--aviso) 12%,transparent);
-  border:1px solid color-mix(in srgb,var(--aviso) 34%,transparent);border-radius:12px;
-  padding:12px 14px;font-size:13.5px;margin-top:12px}
-.passos{margin:10px 0 0;padding-left:20px;color:var(--mudo);font-size:13.5px}
-.passos li{margin:5px 0}
-details summary{cursor:pointer;color:var(--mudo);font-size:13.5px}
-@media (max-width:420px){ main{padding:20px 16px 70px} }
+.lote{margin-top:30px}
+.lote .cab{display:flex;align-items:baseline;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.lote h3{font-family:var(--display);font-weight:700;font-size:17px;margin:0;letter-spacing:-.02em}
+.lote .quando{color:var(--fraco);font-size:13px}
+
+.painel{background:var(--sup);border:1px solid var(--linha);border-radius:var(--r);padding:20px;
+  box-shadow:var(--sombra)}
+.linha{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
+.cresce{flex:1;min-width:210px}
+label.campo{display:block;font-size:12px;color:var(--mudo);margin:0 0 6px;font-weight:500}
+input[type=text]{width:100%;background:var(--sup2);border:1px solid var(--linha);
+  border-radius:12px;padding:12px 14px;outline:none;min-width:0}
+input:focus{border-color:#FF2D95;box-shadow:0 0 0 3px rgba(255,45,149,.2)}
+.bt{background:linear-gradient(100deg,#FF2D95,#FF7A1A);color:#fff;border:none;border-radius:12px;
+  padding:12px 20px;font-weight:600;cursor:pointer}
+.bt.mini{padding:8px 13px;font-size:13px;border-radius:10px}
+.bt.claro{background:var(--sup2);color:var(--txt);border:1px solid var(--linha)}
+.recado{margin-top:12px;font-size:13.5px;color:var(--mudo)}
+.nada{border:1px dashed var(--linha);border-radius:var(--r);padding:46px 24px;text-align:center;
+  color:var(--mudo);background:var(--sup)}
+.nota{background:color-mix(in srgb,var(--alerta) 10%,transparent);
+  border:1px solid color-mix(in srgb,var(--alerta) 30%,transparent);
+  border-radius:14px;padding:13px 15px;font-size:13.5px;margin-top:14px}
+.nota ol{margin:8px 0 0;padding-left:20px}
+.nota li{margin:4px 0}
+.recado{margin-top:12px;font-size:13.5px;color:var(--mudo)}
+section[hidden]{display:none}
+@media (max-width:440px){ main{padding:22px 16px 80px} .barra1{gap:10px} }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="topo">
-    <div class="marca"><span class="ponto"></span> Clipador</div>
-    <div class="direita">
-      <span class="chip" id="chipEstado">carregando</span>
-      <button class="icone" id="btTema" aria-label="Alternar tema">◐</button>
+  <div class="fx">
+    <div class="barra1">
+      <div class="logo"><span class="selo"><i></i></span> Clipador</div>
+      <div class="dir">
+        <button class="pilula" id="btPilula" style="cursor:pointer;border:1px solid var(--linha)">
+          <span class="bola"></span> <span id="pilulaCanal">adicionar canal</span></button>
+        <button class="redondo" id="btTema" aria-label="Claro ou escuro">◐</button>
+      </div>
     </div>
+    <nav class="barra2" role="tablist">
+      <button class="aba" role="tab" aria-selected="true" data-tela="inicio">Início</button>
+      <button class="aba" role="tab" aria-selected="false" data-tela="clipes">Clipes</button>
+      <button class="aba" role="tab" aria-selected="false" data-tela="canal">Canal</button>
+    </nav>
   </div>
 </header>
 
 <main>
-  <h1>Seus clipes</h1>
-  <p class="sub">O Clipador olha seu canal na Twitch de 6 em 6 horas, acha os melhores momentos
-  da live, corta em 9:16 com legenda e deixa tudo aqui, pronto pra baixar e postar.</p>
+  <!-- INICIO -->
+  <section data-tela="inicio">
+    <div class="olho" id="olho">twitch · rastreamento automático</div>
+    <h1 class="hero">Bom dia.<br><span>O que vamos cortar hoje?</span></h1>
 
-  <div class="cartao">
-    <div class="linha">
-      <div class="cresce">
-        <label class="campo" for="vod">clipar uma live agora (cole o link do VOD)</label>
-        <input type="text" id="vod" placeholder="https://www.twitch.tv/videos/...">
+    <div class="cartoes">
+      <div class="bloco b1">
+        <span class="forma"></span><span class="forma2"></span>
+        <h3>Sozinho</h3>
+        <p>Ele vigia o canal de 6 em 6 horas e corta a live nova sem você pedir</p>
       </div>
-      <div style="width:150px;min-width:120px">
-        <label class="campo" for="quantos">quantos clipes</label>
-        <select id="quantos">
-          <option>4</option><option selected>6</option><option>8</option><option>10</option>
-        </select>
+      <div class="bloco b2">
+        <span class="forma"></span><span class="forma2"></span>
+        <h3>10 clipes</h3>
+        <p>Por live, em 9:16, com legenda, título e capa prontos</p>
       </div>
-      <button class="bt" id="btClipar">Clipar</button>
+      <div class="bloco b3">
+        <span class="forma"></span><span class="forma2"></span>
+        <h3>Último lote</h3>
+        <p id="ultimoLote">ainda nenhum</p>
+      </div>
+      <div class="bloco b4">
+        <span class="forma"></span><span class="forma2"></span>
+        <h3>É só baixar</h3>
+        <p>Toca aqui mesmo, baixa e copia a legenda pra postar</p>
+      </div>
     </div>
-    <div id="recado" style="margin-top:12px;font-size:13.5px;color:var(--mudo)"></div>
-    <div id="conectar" hidden>
-      <div class="aviso">
-        Pra disparar daqui, o site precisa de uma chave da sua conta do GitHub. Ela fica salva
-        só no seu navegador e não sai dele. Isso é opcional: o Clipador roda sozinho de 6 em 6
-        horas de qualquer jeito.
-        <ol class="passos">
-          <li>Abra <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">esta página do GitHub</a>.</li>
-          <li>Em Repository access, escolha Only select repositories e marque <b>clipador</b>.</li>
-          <li>Em Permissions, Repository permissions, ponha <b>Actions</b> em Read and write.</li>
-          <li>Gere a chave, copie e cole aqui embaixo.</li>
-        </ol>
-      </div>
-      <div class="linha" style="margin-top:12px">
+
+    <div class="titulosec">
+      <h2>Saiu agora</h2>
+      <button data-ir="clipes">ver todos →</button>
+    </div>
+    <div id="recentes"></div>
+  </section>
+
+  <!-- CLIPES -->
+  <section data-tela="clipes" hidden>
+    <div class="olho">todos os lotes</div>
+    <h1 class="hero">Seus clipes.</h1>
+    <div id="lista"></div>
+  </section>
+
+
+  <!-- CANAL -->
+  <section data-tela="canal" hidden>
+    <div class="olho">o canal que ele vigia</div>
+    <h1 class="hero">Adicionar <span>canal.</span></h1>
+    <p style="color:var(--mudo);max-width:62ch;margin:-14px 0 24px">
+      Escreva o canal e salve. A partir daí o Clipador olha ele de 6 em 6 horas, acha live
+      nova que ainda não cortou e publica 10 clipes aqui, sem você pedir.</p>
+    <div class="painel">
+      <div class="linha">
         <div class="cresce">
-          <label class="campo" for="chave">chave (fica só neste navegador)</label>
-          <input type="password" id="chave" placeholder="github_pat_...">
+          <label class="campo" for="canal">canal na twitch</label>
+          <input type="text" id="canal" placeholder="nomedocanal">
         </div>
-        <button class="bt ghost" id="btSalvarChave">Guardar</button>
+        <button class="bt" id="btCanal">Salvar</button>
       </div>
+      <div class="recado" id="recadoCanal"></div>
     </div>
-  </div>
+  </section>
 
-  <div id="lista"></div>
 </main>
 
 <script>
@@ -152,162 +248,179 @@ const DONO = "alanmatosdebarros-png";
 const REPO = "clipador";
 const API = `https://api.github.com/repos/${DONO}/${REPO}`;
 const $ = (s) => document.querySelector(s);
+const $$ = (s) => [...document.querySelectorAll(s)];
 
-/* tema */
 try { const t = localStorage.getItem("clipador_tema"); if (t) document.documentElement.dataset.tema = t; } catch (e) {}
 $("#btTema").onclick = () => {
-  const novo = document.documentElement.dataset.tema === "escuro" ? "claro" : "escuro";
-  document.documentElement.dataset.tema = novo;
-  try { localStorage.setItem("clipador_tema", novo); } catch (e) {}
+  const n = document.documentElement.dataset.tema === "claro" ? "escuro" : "claro";
+  document.documentElement.dataset.tema = n;
+  try { localStorage.setItem("clipador_tema", n); } catch (e) {}
 };
 
-const chave = () => { try { return localStorage.getItem("clipador_chave") || ""; } catch (e) { return ""; } };
-const recado = (t) => { $("#recado").textContent = t; };
+const cab = () => ({ Accept: "application/vnd.github+json" });
 
-/* separa titulo, legenda e hashtags do corpo do lote */
+function ir(tela) {
+  $$(".aba").forEach(b => b.setAttribute("aria-selected", String(b.dataset.tela === tela)));
+  $$("section").forEach(s => s.hidden = s.dataset.tela !== tela);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+$$(".aba").forEach(b => b.onclick = () => ir(b.dataset.tela));
+$$("[data-ir]").forEach(b => b.onclick = () => ir(b.dataset.ir));
+
+const hora = () => {
+  const h = new Date().getHours();
+  return h < 5 ? "Boa madrugada." : h < 12 ? "Bom dia." : h < 18 ? "Boa tarde." : "Boa noite.";
+};
+$(".hero").innerHTML = `${hora()}<br><span>O que vamos cortar hoje?</span>`;
+
+const quando = (iso) => new Date(iso).toLocaleString("pt-BR",
+  { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" });
+
 function lerCorpo(corpo) {
-  const mapa = {};
-  const linhas = (corpo || "").split("\n");
+  const mapa = {}; const linhas = (corpo || "").split("\n");
   for (let i = 0; i < linhas.length; i++) {
     const m = linhas[i].match(/^\*\*(\d+)\.\s*(.+?)\*\*\s*$/);
     if (!m) continue;
-    let legenda = "";
+    let leg = "";
     for (let j = i + 1; j < Math.min(i + 4, linhas.length); j++) {
-      if (linhas[j].trim()) { legenda = linhas[j].trim(); break; }
+      if (linhas[j].trim()) { leg = linhas[j].trim(); break; }
     }
-    const tags = (legenda.match(/#[\wáéíóúâêôãõç]+/gi) || []);
-    mapa[Number(m[1])] = {
-      titulo: m[2],
-      legenda: legenda.replace(/#[\wáéíóúâêôãõç]+/gi, "").trim(),
-      tags: tags.map(t => t.slice(1)),
-    };
+    const tags = leg.match(/#[\wáéíóúâêôãõç]+/gi) || [];
+    mapa[Number(m[1])] = { titulo: m[2],
+      legenda: leg.replace(/#[\wáéíóúâêôãõç]+/gi, "").trim(),
+      tags: tags.map(t => t.slice(1)) };
   }
   return mapa;
 }
 
-const quando = (iso) => {
-  const d = new Date(iso);
-  return d.toLocaleString("pt-BR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" });
-};
+function cartaoClipe(a, textos, assets, i) {
+  const n = Number((a.name.match(/^(\d+)/) || [])[1] || i + 1);
+  const t = textos[n] || { titulo: a.name.replace(/\.mp4$/, ""), legenda: "", tags: [] };
+  const capa = assets.find(x => x.name === a.name.replace(/\.mp4$/, ".jpg"));
+  const leg = (t.legenda + " " + t.tags.map(x => "#" + x).join(" ")).trim();
+  return `<article class="clipe">
+    <div class="tela">
+      <video controls preload="none" ${capa ? `poster="${capa.browser_download_url}"` : ""}
+             src="${a.browser_download_url}"></video>
+      <span class="selo2"><i></i> pronto</span>
+      <span class="formato">9x16</span>
+    </div>
+    <div class="txt">
+      <div class="nome">${t.titulo}</div>
+      ${t.legenda ? `<div class="leg">${t.legenda}</div>` : ""}
+      <div class="marcas">${t.tags.map(x => `<span class="marca">#${x}</span>`).join("")}</div>
+      <div class="acoes">
+        <a class="bt mini" href="${a.browser_download_url}" target="_blank" rel="noopener">Baixar</a>
+        <button class="bt claro mini" data-copiar="${encodeURIComponent(leg)}">Copiar legenda</button>
+      </div>
+    </div>
+  </article>`;
+}
+
+function desenhaLote(lote) {
+  const textos = lerCorpo(lote.body);
+  const assets = lote.assets || [];
+  const mp4 = assets.filter(a => a.name.endsWith(".mp4")).sort((a, b) => a.name.localeCompare(b.name));
+  return `<section class="lote">
+    <div class="cab">
+      <h3>${lote.name || lote.tag_name}</h3>
+      <span class="quando">${quando(lote.published_at)} · ${mp4.length} clipes</span>
+    </div>
+    <div class="grade">${mp4.map((a, i) => cartaoClipe(a, textos, assets, i)).join("")}</div>
+  </section>`;
+}
 
 async function carregar() {
   let lotes = [];
   try {
-    const r = await fetch(`${API}/releases?per_page=20`, { headers: { Accept: "application/vnd.github+json" } });
+    const r = await fetch(`${API}/releases?per_page=100`, { headers: cab() });
     if (r.ok) lotes = await r.json();
   } catch (e) {}
-
-  const alvo = $("#lista");
   const comClipes = lotes.filter(l => (l.assets || []).some(a => a.name.endsWith(".mp4")));
+
   if (!comClipes.length) {
-    alvo.innerHTML = `<div class="vazio">
-      Nenhum clipe ainda.<br><br>
-      Assim que você transmitir e a Twitch guardar o VOD, o Clipador pega sozinho
-      e os clipes aparecem aqui. Se quiser adiantar, cole o link de um VOD lá em cima.
-    </div>`;
+    const vazio = `<div class="nada">Nenhum clipe ainda.<br><br>
+      Assim que tiver live nova no canal, o Clipador pega sozinho e os clipes aparecem aqui.</div>`;
+    $("#lista").innerHTML = vazio;
+    $("#recentes").innerHTML = vazio;
     return;
   }
-
-  alvo.innerHTML = comClipes.map(lote => {
-    const textos = lerCorpo(lote.body);
-    const mp4 = (lote.assets || []).filter(a => a.name.endsWith(".mp4"))
-      .sort((a, b) => a.name.localeCompare(b.name));
-    const cartoes = mp4.map((a, i) => {
-      const n = Number((a.name.match(/^(\d+)/) || [])[1] || i + 1);
-      const t = textos[n] || { titulo: a.name.replace(/\.mp4$/, ""), legenda: "", tags: [] };
-      const capa = (lote.assets || []).find(x => x.name === a.name.replace(/\.mp4$/, ".jpg"));
-      return `<article class="clipe">
-        <video controls preload="none" ${capa ? `poster="${capa.browser_download_url}"` : ""}
-               src="${a.browser_download_url}"></video>
-        <div class="corpo">
-          <div class="tit">${t.titulo}</div>
-          ${t.legenda ? `<div class="leg">${t.legenda}</div>` : ""}
-          <div class="tags">${t.tags.map(x => `<span class="tag">#${x}</span>`).join("")}</div>
-          <div class="acoes">
-            <a class="bt pequeno" href="${a.browser_download_url}" download>Baixar</a>
-            <button class="bt ghost pequeno" data-copiar="${encodeURIComponent((t.legenda + " " + t.tags.map(x => "#" + x).join(" ")).trim())}">Copiar legenda</button>
-          </div>
-        </div>
-      </article>`;
-    }).join("");
-    return `<section class="lote">
-      <h3>${lote.name || lote.tag_name}</h3>
-      <div class="quando">${quando(lote.published_at)} · ${mp4.length} clipes</div>
-      <div class="grade">${cartoes}</div>
-    </section>`;
-  }).join("");
-
-  alvo.addEventListener("click", async (e) => {
-    const b = e.target.closest("[data-copiar]");
-    if (!b) return;
-    try {
-      await navigator.clipboard.writeText(decodeURIComponent(b.dataset.copiar));
-      b.textContent = "copiado";
-      setTimeout(() => b.textContent = "Copiar legenda", 1600);
-    } catch (err) { b.textContent = "copie na mão"; }
-  }, { once: false });
+  $("#lista").innerHTML = comClipes.map(desenhaLote).join("");
+  $("#recentes").innerHTML = desenhaLote(comClipes[0]);
+  const n = (comClipes[0].assets || []).filter(a => a.name.endsWith(".mp4")).length;
+  $("#ultimoLote").textContent = `${n} clipes · ${quando(comClipes[0].published_at)}`;
 }
+
+document.addEventListener("click", async (e) => {
+  const b = e.target.closest("[data-copiar]");
+  if (!b) return;
+  try {
+    await navigator.clipboard.writeText(decodeURIComponent(b.dataset.copiar));
+    b.textContent = "copiado"; setTimeout(() => b.textContent = "Copiar legenda", 1500);
+  } catch (err) { b.textContent = "copie na mão"; }
+});
+
+async function lerCanal() {
+  try {
+    const r = await fetch(`${API}/contents/canal.txt`, { headers: cab() });
+    if (!r.ok) return "";
+    const d = await r.json();
+    const txt = decodeURIComponent(escape(atob(d.content.replace(/\n/g, ""))));
+    const linha = txt.split("\n").map(l => l.trim())
+      .find(l => l && !l.startsWith("#")) || "";
+    window._shaCanal = d.sha;
+    return linha.replace(/^@/, "");
+  } catch (e) { return ""; }
+}
+
+$("#btPilula").onclick = () => ir("canal");
+
+$("#btCanal").onclick = async () => {
+  const canal = $("#canal").value.trim().replace(/^@/, "")
+    .replace(/^.*twitch\.tv\//, "").replace(/\/.*$/, "");
+  if (!canal) { $("#recadoCanal").textContent = "escreve o nome do canal"; return; }
+  $("#recadoCanal").textContent = "salvando...";
+  try {
+    const atual = await fetch(`${API}/contents/canal.txt`, { headers: cab() }).then(r => r.json());
+    const r = await fetch(`${API}/contents/canal.txt`, {
+      method: "PUT", headers: { ...cab(), "Content-Type": "application/json" },
+      body: JSON.stringify({ message: `Canal: ${canal}`,
+        content: btoa(`# canal rastreado\n${canal}\n`), sha: atual.sha }),
+    });
+    if (r.ok) {
+      $("#recadoCanal").textContent = "salvo. Ele vigia esse canal a partir de agora.";
+      $("#pilulaCanal").textContent = canal;
+    } else {
+      $("#recadoCanal").textContent = "não consegui salvar daqui. Me manda o nome do canal no chat que eu gravo pra você.";
+    }
+  } catch (e) {
+    $("#recadoCanal").textContent = "não consegui salvar daqui. Me manda o nome do canal no chat que eu gravo pra você.";
+  }
+};
 
 async function estado() {
   try {
-    const r = await fetch(`${API}/actions/runs?per_page=1`, { headers: { Accept: "application/vnd.github+json" } });
+    const r = await fetch(`${API}/actions/runs?per_page=1`, { headers: cab() });
     if (!r.ok) return;
-    const d = await r.json();
-    const run = (d.workflow_runs || [])[0];
+    const run = ((await r.json()).workflow_runs || [])[0];
     if (!run) return;
-    const c = $("#chipEstado");
     if (run.status !== "completed") {
-      c.textContent = "montando clipes agora";
-      c.classList.add("vivo");
+      $("#olho").textContent = "cortando uma live agora...";
       setTimeout(() => { estado(); carregar(); }, 30000);
     } else {
-      c.textContent = run.conclusion === "success" ? "em dia" : "última rodada falhou";
-      c.classList.toggle("vivo", run.conclusion === "success");
+      $("#olho").textContent = "twitch · rastreamento automático a cada 6 horas";
     }
   } catch (e) {}
 }
 
-$("#btSalvarChave").onclick = () => {
-  const v = $("#chave").value.trim();
-  if (!v) return;
-  try { localStorage.setItem("clipador_chave", v); } catch (e) {}
-  $("#chave").value = "";
-  $("#conectar").hidden = true;
-  recado("chave guardada. Pode clicar em Clipar.");
-};
-
-$("#btClipar").onclick = async () => {
-  const vod = $("#vod").value.trim();
-  if (!vod) { recado("cole o link do VOD primeiro"); return; }
-  if (!chave()) { $("#conectar").hidden = false; recado("falta conectar sua conta, uma vez só."); return; }
-  recado("mandando...");
-  try {
-    const r = await fetch(`${API}/actions/workflows/clipar.yml/dispatches`, {
-      method: "POST",
-      headers: {
-        Accept: "application/vnd.github+json",
-        Authorization: `Bearer ${chave()}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ ref: "main", inputs: { vod, quantos: $("#quantos").value, perfil: "gta6" } }),
-    });
-    if (r.status === 204) {
-      recado("na fila. Uma live de 4 horas leva mais ou menos 1 hora. Pode fechar o site, os clipes aparecem aqui.");
-      $("#vod").value = "";
-      setTimeout(estado, 8000);
-    } else if (r.status === 401 || r.status === 403) {
-      recado("a chave não foi aceita. Gere outra com permissão de Actions no repositório clipador.");
-      $("#conectar").hidden = false;
-    } else {
-      recado("não consegui mandar (" + r.status + ")");
-    }
-  } catch (e) {
-    recado("não consegui mandar: " + e.message);
-  }
-};
-
-carregar();
-estado();
+async function iniciar() {
+  const canal = await lerCanal();
+  $("#pilulaCanal").textContent = canal || "adicionar canal";
+  if (canal) $("#canal").value = canal;
+  carregar();
+  estado();
+}
+iniciar();
 </script>
 </body>
 </html>
