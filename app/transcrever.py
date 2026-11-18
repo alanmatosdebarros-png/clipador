@@ -8,6 +8,8 @@ from __future__ import annotations
 import tempfile
 from pathlib import Path
 
+import numpy as np
+
 from . import media
 
 _modelo_cache: dict[str, object] = {}
@@ -39,12 +41,19 @@ def transcrever(caminho: str, inicio: float, fim: float, cfg: dict,
     if motor == "nenhum":
         return {"texto": "", "palavras": [], "motor": "nenhum"}
 
+    if motor == "faster":
+        # o proprio ffmpeg decodifica; assim nao dependemos do PyAV do
+        # faster-whisper, que muda de assinatura entre versoes
+        pcm = media.audio_pcm(caminho, 16000, ffmpeg,
+                              inicio=inicio, duracao=max(0.5, fim - inicio))
+        if pcm.size < 1600:
+            return {"texto": "", "palavras": [], "motor": "faster"}
+        return _faster(pcm.astype(np.float32), cfg)
+
     with tempfile.TemporaryDirectory() as tmp:
         wav = media.extrair_wav(caminho, Path(tmp) / "a.wav", 16000, ffmpeg,
                                 inicio=inicio, duracao=max(0.5, fim - inicio))
-        if motor == "mlx":
-            return _mlx(str(wav), cfg)
-        return _faster(str(wav), cfg)
+        return _mlx(str(wav), cfg)
 
 
 def _mlx(wav: str, cfg: dict) -> dict:
@@ -69,13 +78,13 @@ def _mlx(wav: str, cfg: dict) -> dict:
     return {"texto": " ".join(partes).strip(), "palavras": palavras, "motor": "mlx"}
 
 
-def _faster(wav: str, cfg: dict) -> dict:
+def _faster(audio, cfg: dict) -> dict:
     from faster_whisper import WhisperModel
     nome = cfg.get("modelo_transcricao_fallback", "small")
     if nome not in _modelo_cache:
         _modelo_cache[nome] = WhisperModel(nome, device="cpu", compute_type="int8")
     modelo = _modelo_cache[nome]
-    segs, _ = modelo.transcribe(wav, language=cfg.get("idioma") or None,  # type: ignore[attr-defined]
+    segs, _ = modelo.transcribe(audio, language=cfg.get("idioma") or None,  # type: ignore[attr-defined]
                                 word_timestamps=True, vad_filter=True,
                                 condition_on_previous_text=False)
     palavras, partes = [], []
