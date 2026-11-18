@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       vod:
-        description: "Link do VOD da Twitch"
+        description: "Link do VOD da Twitch (ou escreva teste pra um ensaio de 3 min)"
         required: true
         type: string
       quantos:
@@ -52,17 +52,35 @@ jobs:
           ffmpeg -version | head -1
           tesseract --version | head -1
 
+      - name: Video de ensaio (so quando vod = teste)
+        if: ${{ inputs.vod == 'teste' }}
+        run: |
+          ffmpeg -hide_banner -loglevel error -y \
+            -f lavfi -i "testsrc2=size=1280x720:rate=30:duration=180" \
+            -f lavfi -i "anoisesrc=d=180:c=pink:a=0.05" \
+            -f lavfi -i "sine=f=700:d=180" \
+            -filter_complex "[0:v]drawbox=x='150+700*abs(sin(t/25))':y=240:w=240:h=240:color=orange@0.95:t=fill[v]; \
+              [2:a]volume='if(between(t,40,50)+between(t,120,132),1.0,0.02)':eval=frame[s]; \
+              [1:a][s]amix=inputs=2:duration=first[a]" \
+            -map "[v]" -map "[a]" -c:v libx264 -preset ultrafast -c:a aac ensaio.mp4
+          ls -lh ensaio.mp4
+
       - name: Achar os momentos e montar os clipes
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           CLIPADOR_HOME: ${{ github.workspace }}/dados
           CLIPADOR_SAIDA: ${{ github.workspace }}/saida
         run: |
-          python nuvem.py \
-            --vod "${{ inputs.vod }}" \
-            --quantos "${{ inputs.quantos }}" \
-            --perfil "${{ inputs.perfil }}" \
-            --alvo "${{ inputs.duracao }}"
+          if [ "${{ inputs.vod }}" = "teste" ]; then
+            python nuvem.py --arquivo ensaio.mp4 --quantos 2 \
+              --perfil "${{ inputs.perfil }}" --alvo 60 --minimo 30 --maximo 90
+          else
+            python nuvem.py \
+              --vod "${{ inputs.vod }}" \
+              --quantos "${{ inputs.quantos }}" \
+              --perfil "${{ inputs.perfil }}" \
+              --alvo "${{ inputs.duracao }}"
+          fi
 
       - name: Mostrar o que sobrou de disco
         if: always()
