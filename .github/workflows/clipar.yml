@@ -48,7 +48,7 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y -qq ffmpeg tesseract-ocr tesseract-ocr-por tesseract-ocr-eng
           python -m pip install --quiet --upgrade pip
-          pip install --quiet numpy Pillow yt-dlp pytesseract faster-whisper "av<15"
+          pip install --quiet numpy Pillow yt-dlp pytesseract faster-whisper
           ffmpeg -version | head -1
           tesseract --version | head -1
 
