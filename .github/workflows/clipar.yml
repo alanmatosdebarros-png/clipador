@@ -1,0 +1,78 @@
+name: Clipar uma live
+
+on:
+  workflow_dispatch:
+    inputs:
+      vod:
+        description: "Link do VOD da Twitch"
+        required: true
+        type: string
+      quantos:
+        description: "Quantos clipes montar"
+        required: true
+        default: "6"
+        type: string
+      perfil:
+        description: "Perfil de HUD do jogo"
+        required: true
+        default: "gta6"
+        type: choice
+        options: [gta6, gta5, generico]
+      duracao:
+        description: "Duracao alvo de cada clipe, em segundos"
+        required: true
+        default: "150"
+        type: string
+
+jobs:
+  clipar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Liberar espaco em disco
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc \
+                      /usr/local/share/boost "$AGENT_TOOLSDIRECTORY" || true
+          sudo apt-get clean
+          df -h /
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalar o que o Clipador precisa
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg tesseract-ocr tesseract-ocr-por tesseract-ocr-eng
+          python -m pip install --quiet --upgrade pip
+          pip install --quiet numpy Pillow yt-dlp pytesseract faster-whisper
+          ffmpeg -version | head -1
+          tesseract --version | head -1
+
+      - name: Achar os momentos e montar os clipes
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CLIPADOR_HOME: ${{ github.workspace }}/dados
+          CLIPADOR_SAIDA: ${{ github.workspace }}/saida
+        run: |
+          python nuvem.py \
+            --vod "${{ inputs.vod }}" \
+            --quantos "${{ inputs.quantos }}" \
+            --perfil "${{ inputs.perfil }}" \
+            --alvo "${{ inputs.duracao }}"
+
+      - name: Mostrar o que sobrou de disco
+        if: always()
+        run: df -h / && du -sh saida 2>/dev/null || true
+
+      - name: Guardar os clipes pra baixar
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: clipes
+          path: saida/
+          retention-days: 14
+          if-no-files-found: warn
