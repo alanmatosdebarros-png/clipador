@@ -1,0 +1,4 @@
+# instalados só no Mac, usam o chip A18 Pro
+mlx-whisper>=0.4.0
+pyobjc-framework-Vision>=10.3
+pyobjc-framework-Quartz>=10.3

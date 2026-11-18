@@ -1,0 +1,2 @@
+# usados quando mlx/Vision não existem (Linux, Mac Intel)
+faster-whisper>=1.0.3
