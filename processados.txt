@@ -1,0 +1,1 @@
+# ids de VOD que o Clipador ja processou

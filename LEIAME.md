@@ -1,158 +1,89 @@
 # Clipador
 
-Pega a sua live de GTA na Twitch, acha os momentos sozinho, reenquadra pro vertical
-e deixa o clipe pronto com titulo, legenda e hashtags.
+Pega a sua live de GTA na Twitch, acha os momentos sozinho, reenquadra pro
+vertical e deixa o clipe pronto com titulo, legenda e hashtags.
 
-Roda de tres jeitos: o GitHub monta tudo sozinho, a tela do app no
-navegador, ou instalado no seu Mac.
+Roda dentro do GitHub, pelo navegador. Nao instala nada, nao importa se voce
+esta no Mac, no Windows ou no Linux, e nao precisa ser sempre o mesmo
+computador. So precisa estar logado na sua conta do GitHub, porque o
+repositorio e privado.
 
-## Jeito 1: o GitHub monta os clipes pra voce (nao precisa de nada)
+## Como usar, de qualquer computador
 
-Nao instala nada, nao abre editor nenhum. Voce da o link do VOD e volta depois
-pra baixar os clipes prontos.
+1. Abra **github.com/alanmatosdebarros-png/clipador** e entre na sua conta.
+2. Aba **Actions**, no topo.
+3. Na lista da esquerda, **Clipar uma live**.
+4. Botao **Run workflow**, no canto direito.
+5. Cole o link do VOD da Twitch, escolha quantos clipes quer, confirme em
+   **Run workflow**.
+6. Pode fechar o navegador e ate desligar o computador. O processamento
+   acontece na maquina do GitHub, nao na sua.
+7. Quando terminar, volte em Actions e abra a execucao. No fim da pagina tem
+   **Artifacts**, com um arquivo `clipes`. Baixa e pronto.
 
-1. Aba **Actions** aqui em cima.
-2. Na lista da esquerda, **Clipar uma live**.
-3. Botao **Run workflow**, cole o link do VOD, escolha quantos clipes quer e
-   clique em **Run workflow** de novo.
-4. Uma live de 4 horas leva mais ou menos 1 hora pra processar. Pode fechar a aba.
-5. Quando terminar, abra a execucao: embaixo tem **Artifacts**, com um arquivo
-   `clipes`. Baixa, e dentro estao os MP4 em 9:16, as capas e um `textos.json`
-   com titulo, legenda e hashtags de cada um.
+Dentro do `clipes` vem os MP4 em 9:16, as capas e um `textos.json` com titulo,
+legenda e hashtags de cada clipe. Na propria pagina da execucao aparece uma
+tabela com os momentos, a nota de cada um e por que foram marcados.
 
-Na propria pagina da execucao aparece uma tabela com os momentos, a nota de cada
-um, por que foram marcados e as legendas prontas pra copiar.
+Uma live de 4 horas leva mais ou menos 1 hora. Os clipes ficam guardados por 5
+dias, entao baixe dentro desse prazo.
 
-Se quiser titulo e legenda escritos pelo Claude em vez do texto automatico,
-va em Settings, Secrets and variables, Actions, e crie um segredo chamado
-`ANTHROPIC_API_KEY`. Sem isso ele continua funcionando, so com texto mais simples.
+## No celular
 
-## Jeito 2: a tela do app no navegador (Codespaces)
-
-O proprio GitHub roda o app numa maquina na nuvem e mostra a tela no seu navegador.
-
-1. Nesta pagina do repositorio, clique no botao verde **Code**.
-2. Aba **Codespaces**, botao **Create codespace on main**.
-3. Espera de 3 a 5 minutos na primeira vez. Ele instala tudo sozinho.
-4. A tela do Clipador abre numa aba de visualizacao do lado. Se nao abrir,
-   va na aba **PORTS** embaixo, porta 8777, e clique no icone de globo.
-
-Pra pegar os clipes prontos: no explorador de arquivos da esquerda, abra
-`clipador-dados/clipes`, clique com o botao direito no MP4 e escolha **Download**.
-
-Quando terminar, volte em **Code > Codespaces** e pare o codespace, pra nao
-gastar as horas gratuitas (60 horas por mes numa maquina de 2 nucleos).
-
-Diferenca pro Mac: na nuvem nao tem o chip da Apple, entao a transcricao e o
-render usam processador comum e demoram mais. Um clipe de 2min30 leva uns 4
-minutos pra montar em vez de menos de um.
-
-## Jeito 3: no seu Mac
-
-Baixe o `Instalar Clipador.command`, clique nele com o botao direito e escolha
-Abrir. Se o macOS bloquear mesmo assim, va em Ajustes do Sistema, Privacidade e
-Seguranca, role ate o aviso sobre o arquivo e clique em **Abrir Assim Mesmo**.
-
-Rodando no Mac ele fica bem mais rapido: usa o encoder de video do chip e a
-transcricao no Neural Engine.
+Funciona igual, pelo navegador ou pelo aplicativo do GitHub. Disparar a
+execucao e acompanhar funciona bem; baixar o pacote de clipes e mais comodo no
+computador.
 
 ## Antes da primeira live
 
-Liga o guardar de VOD na Twitch, senao nao sobra nada pra clipar:
+Ligue o guardar de VOD na Twitch, senao nao sobra nada pra clipar:
 
-Twitch no navegador > Painel de criador > Configuracoes > Transmissao >
+Twitch no navegador, Painel de criador, Configuracoes, Transmissao,
 **Armazenar transmissoes anteriores**. So da pra ligar pela web, nao pelo PS5
 nem pelo celular. O VOD fica 7 dias em conta comum, 14 em afiliado e 60 em
 parceiro, Turbo ou Prime.
 
-## Como usar
+## Titulo e legenda escritos pelo Claude
 
-**Fonte.** Escreve o nome do seu canal e clica em Ver o canal. Ele diz se voce
-esta ao vivo e lista os VODs guardados.
-
-**Dois modos, voce escolhe na tela:**
-
-- *Depois da live*: baixa o VOD e processa com a maquina livre. E o recomendado
-  pro seu caso, porque durante a transmissao o Mac ja esta jogando a tela da
-  Twitch pro TikTok.
-- *Durante a live*: copia a transmissao em pedacos de 5 minutos sem recodificar
-  nada (gasta quase nada de processador) e vai achando os momentos enquanto
-  voce joga. O chat e lido ao vivo nos dois modos quando a live esta no ar.
-
-**Momentos.** Cada cartao mostra a nota, a duracao, por que aquilo foi marcado
-(chat acelerou, voce levantou a voz, estouro grave, tomou dano, nivel de procurado
-subiu) e o que voce falou. Voce mexe no inicio e no fim, corrige o titulo, e so
-clica em Montar no que quiser. Nada e renderizado antes disso.
-
-**Fila.** Clipe pronto, com horario e redes marcados, pra voce baixar e subir.
+Opcional. Em Settings, Secrets and variables, Actions, crie um segredo chamado
+`ANTHROPIC_API_KEY`. Sem ele o Clipador continua funcionando, so com texto mais
+simples, montado a partir da propria transcricao.
 
 ## Como ele acha os momentos
 
-Ele nao olha so volume, que era o erro do clipador antigo. Junta:
+Nao olha so volume. Junta varios sinais e tira os picos da soma deles:
 
-- chat da Twitch ao vivo: velocidade das mensagens, risada (kkkk, LUL), susto
-  (nossa, caralho, mano, que isso), caixa alta e pedido explicito de clipe
 - audio: subida rapida de volume, energia na faixa da voz, estouro grave de
   explosao e tiro
 - imagem: corte de cena, quantidade de movimento, clarao
 - GTA: leitura do texto na tela (WASTED, BUSTED, MISSAO CONCLUIDA, ELIMINADO),
   nivel de procurado subindo e barra de vida caindo
-
-Tudo isso vira uma curva unica e os picos dessa curva sao os momentos.
+- chat da Twitch: velocidade das mensagens, risada, susto, caixa alta e pedido
+  explicito de clipe (so quando o Clipador acompanha a live em tempo real)
 
 ## Duracao do clipe
 
 Alvo de 2min30, mas respira: comeca no corte de cena antes do sinal subir e
 termina depois do desfecho, com 2 segundos de folga. Preso entre 45s e 3min,
-que e o que cabe em TikTok, Reels e Shorts. Tudo isso se muda em Ajustes.
+que e o que cabe em TikTok, Reels e Shorts.
 
 ## GTA VI
 
 O perfil de HUD do GTA VI vem marcado como nao calibrado, porque o jogo saiu
 agora e a posicao do minimapa e das estrelas ainda nao esta mapeada. A leitura
-de texto ja funciona sem calibrar.
+de texto na tela ja funciona sem calibrar.
 
-Pra calibrar: Ajustes > Calibrar com um print. Voce solta um print do jogo,
-escolhe a regiao na lista, arrasta um retangulo em cima dela e salva. Dois
-minutos, uma vez so.
+## A tela do app, se um dia quiser mexer nela
 
-## O que mudou em relacao ao clipador antigo
-
-- acha momento por varios sinais, nao so por volume
-- le o chat da Twitch, que e o sinal mais forte
-- le o que o GTA escreve na tela
-- corte com inicio e fim escolhidos pelo conteudo, nao janela fixa
-- tempo de cada palavra vindo do proprio Whisper, entao a legenda e o bipe de
-  palavrao caem no lugar certo
-- transcreve uma vez so, e por padrao so em volta dos candidatos
-- sai em 60fps, nao em 30
-- volume equalizado de verdade (EBU R128, duas passadas)
-- legenda fora da area dos botoes do TikTok
-- titulo numa caixa so, com quebra certa, sem invadir o gameplay
-- minimapa entra como inserto no canto quando o corte vertical o deixaria de fora
-- capa gerada junto
-- seu estilo fica salvo, sem perguntar nada a cada leva
-- fila de clipes, nao um de cada vez
-- apaga o video bruto quando voce manda, pra nao entupir o disco
+O repositorio tambem traz o Clipador com interface, que roda numa maquina na
+nuvem pelo **Code > Codespaces**, ou no seu proprio computador. Isso e
+opcional: o caminho pelo Actions acima nao precisa de nada disso. O
+`Instalar Clipador.command` na raiz e um instalador so pra macOS, de uma versao
+anterior do plano, e pode ser ignorado.
 
 ## Postar sozinho
 
 Ainda nao, e o motivo nao e tecnico. TikTok e YouTube so liberam post publico
-por aplicativo depois de uma auditoria que leva de dias a semanas, e o Instagram
-exige que o app esteja ligado na hora da publicacao. Por isso a fila deixa tudo
-pronto e voce sobe. Quando quiser encarar a auditoria, da pra ligar.
-
-## Pastas
-
-Tudo fica em `~/Clipador`:
-
-- `clipes`: os MP4 montados
-- `capas`: as capas
-- `bruto`: VOD e pedacos da live (e isso que voce apaga pelo botao)
-- `dados`: banco, chat e sinais
-- `perfis`: perfis de HUD
-
-## Se der problema
-
-Abre o Terminal e roda `~/Clipador/venv/bin/python <pasta>/clipador.py`. A tela
-e a mesma e o terminal mostra o erro.
+por aplicativo depois de uma auditoria que leva de dias a semanas, e o
+Instagram exige que o app esteja ligado na hora da publicacao. Por isso o
+Clipador entrega tudo pronto e voce sobe.

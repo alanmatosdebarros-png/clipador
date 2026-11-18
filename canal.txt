@@ -1,0 +1,3 @@
+# Escreva aqui embaixo, sozinho numa linha, o nome do seu canal na Twitch.
+# Exemplo: alanmatos
+# Enquanto estiver vazio, o Clipador nao procura live nova sozinho.
